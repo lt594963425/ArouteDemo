@@ -1,0 +1,118 @@
+apply plugin: 'com.android.application'
+apply from: 'tinker-support.gradle'
+apply from: 'multiple-channel.gradle'
+android {
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
+    signingConfigs {
+        release {
+            storeFile file("./keystore/airline.jks")
+            storePassword "al123456"
+            keyAlias "airline"
+            keyPassword "al123456"
+
+        }
+        debug {
+            storeFile file("./keystore/airline.jks")
+            storePassword "al123456"
+            keyAlias "airline"
+            keyPassword "al123456"
+        }
+    }
+
+    //recommend
+    dexOptions {
+        jumboMode = true
+    }
+
+    defaultConfig {
+        applicationId "com.example.aroutedemo2"
+        minSdkVersion 19
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0." + versionCode
+        multiDexEnabled true
+        vectorDrawables.useSupportLibrary = true
+        javaCompileOptions {
+            annotationProcessorOptions.includeCompileClasspath = true
+        }
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [AROUTER_MODULE_NAME: project.getName()]
+            }
+        }
+        ndk {
+            //设置支持的SO库架构
+            abiFilters 'armeabi' //, 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+        }
+    }
+    buildTypes {
+        release {
+            //移除无用的资源文件
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        debug {
+            debuggable true
+            minifyEnabled false
+            signingConfig signingConfigs.debug
+        }
+    }
+
+    compileOptions {
+        //使用JAVA8语法解析
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+    dataBinding {
+        enabled = true
+    }
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+    }
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    def androidDependencies = rootProject.ext.androidDependencies
+    def viewDependencies = rootProject.ext.viewDependencies
+    def dataDependencies = rootProject.ext.dataDependencies
+    implementation androidDependencies.appcompat_v7
+    implementation androidDependencies.recyclerView
+    implementation androidDependencies.design
+    implementation androidDependencies.support_v4
+    implementation androidDependencies.cardview
+    implementation androidDependencies.constraint
+    implementation androidDependencies.multidex
+    implementation project(path: ':moduleCommon')
+
+    annotationProcessor viewDependencies.aptaroutercompiler
+    //eventbus
+    implementation dataDependencies.eventbus
+
+    // 远程仓库集成方式（推荐）
+    implementation dataDependencies.thinkerCrashReportUpgrade
+
+    // 指定tinker依赖版本（注：应用升级1.3.5版本起，不再内置tinker）
+    implementation dataDependencies.tinkerandroidlib
+    implementation project(path: ':modulebase')
+    implementation project(path: ':modulePicture')
+    if (!isModule.toBoolean()) {
+        implementation project(path: ':modulehome')
+        implementation project(path: ':moduleuser')
+    }
+
+}

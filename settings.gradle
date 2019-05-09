@@ -1,0 +1,1 @@
+include ':app', ':moduleCommon', ':moduleUcrop', ':modulePicture', ':modulebase', ':moduleuser', ':modulehome'

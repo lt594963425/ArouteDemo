@@ -1,0 +1,11 @@
+package com.example.modulebase.data;
+
+
+import com.alibaba.android.arouter.facade.template.IProvider;
+
+/**
+ * 服务管理： 用于模块之间进行数据的传递，例如：首页模块没依赖我的模块，但是需要获取我的模块的数据，就是用这个
+ */
+public interface IUserInfo extends IProvider {
+    String getName();
+}

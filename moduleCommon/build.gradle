@@ -1,0 +1,45 @@
+apply plugin: 'com.android.library'
+
+android {
+    def globalConfiguration = rootProject.extensions.getByName("ext")
+    compileSdkVersion globalConfiguration.androidCompileSdkVersion
+    buildToolsVersion globalConfiguration.androidBuildToolsVersion
+
+    defaultConfig {
+        minSdkVersion globalConfiguration.androidMinSdkVersion
+        targetSdkVersion globalConfiguration.androidTargetSdkVersion
+
+    }
+    buildTypes {
+        release {
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    def androidDependencies = rootProject.ext.androidDependencies
+    def viewDependencies = rootProject.ext.viewDependencies
+    def dataDependencies = rootProject.ext.dataDependencies
+    implementation androidDependencies.appcompat_v7
+    implementation androidDependencies.recyclerView
+
+    //rx
+    api dataDependencies.rxbinding2
+    implementation files('libs\\fastjson-1.2.56.jar')
+    implementation androidDependencies.recyclerView
+    //图片
+    implementation viewDependencies.glide
+
+    //高德3d地图及导航
+    implementation viewDependencies.navi3dmap
+
+    //高德搜索
+    implementation viewDependencies.searchmap
+
+    //高德定位
+    implementation viewDependencies.locationmap
+    implementation project(path: ':modulePicture')
+
+}

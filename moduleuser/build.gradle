@@ -1,0 +1,58 @@
+if (isModule.toBoolean()) {
+    apply plugin: 'com.android.application'
+} else {
+    apply plugin: 'com.android.library'
+}
+
+android {
+    compileSdkVersion 28
+
+
+    defaultConfig {
+
+        if (isModule.toBoolean()) {
+            applicationId "com.example.moduleuser"
+        }
+        minSdkVersion 19
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        sourceSets {
+            main {
+                if (isModule.toBoolean()) {
+                    manifest.srcFile 'src/main/buildApp/AndroidManifest.xml'
+                } else {
+                    manifest.srcFile 'src/main/buildModule/AndroidManifest.xml'
+                }
+            }
+        }
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [AROUTER_MODULE_NAME: project.getName()]
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    def androidDependencies = rootProject.ext.androidDependencies
+    def viewDependencies = rootProject.ext.viewDependencies
+    def dataDependencies = rootProject.ext.dataDependencies
+    implementation androidDependencies.appcompat_v7
+    implementation androidDependencies.recyclerView
+    implementation viewDependencies.arouterapi
+    annotationProcessor viewDependencies.aptaroutercompiler
+
+    implementation project(path: ':modulebase')
+}
