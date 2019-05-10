@@ -289,5 +289,26 @@ public class User implements Parcelable {
         return this.withdraw_pass;
     }
 
-
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", userType=" + userType +
+                ", tel='" + tel + '\'' +
+                ", pwd='" + pwd + '\'' +
+                ", name='" + name + '\'' +
+                ", age='" + age + '\'' +
+                ", sex='" + sex + '\'' +
+                ", idCard='" + idCard + '\'' +
+                ", nickName='" + nickName + '\'' +
+                ", imagePath='" + imagePath + '\'' +
+                ", city='" + city + '\'' +
+                ", industry='" + industry + '\'' +
+                ", interest='" + interest + '\'' +
+                ", token='" + token + '\'' +
+                ", userId='" + userId + '\'' +
+                ", isLogin=" + isLogin +
+                ", withdraw_pass=" + withdraw_pass +
+                '}';
+    }
 }

@@ -1,12 +1,17 @@
 apply plugin: 'com.android.library'
 apply plugin: 'org.greenrobot.greendao'
+apply plugin: 'com.jakewharton.butterknife'
 android {
-    compileSdkVersion 28
+    def globalConfiguration = rootProject.extensions.getByName("ext")
+    compileSdkVersion globalConfiguration.androidCompileSdkVersion
+    buildToolsVersion globalConfiguration.androidBuildToolsVersion
     defaultConfig {
-        minSdkVersion 19
-        targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion globalConfiguration.androidMinSdkVersion
+        targetSdkVersion globalConfiguration.androidTargetSdkVersion
+        versionCode globalConfiguration.versionCode
+        versionName globalConfiguration.versionName
+        multiDexEnabled true
+        vectorDrawables.useSupportLibrary = true
         javaCompileOptions {
             annotationProcessorOptions.includeCompileClasspath = true
         }
@@ -25,7 +30,7 @@ android {
     }
     greendao {
         schemaVersion 1
-        daoPackage 'com.data.source.db' //这个填写你自己创建的路径
+        daoPackage 'com.example.modulebase.data.source.db' //这个填写你自己创建的路径
         targetGenDir 'src/main/java'
     }
 }
@@ -38,15 +43,20 @@ dependencies {
     implementation androidDependencies.appcompat_v7
     implementation androidDependencies.recyclerView
     implementation androidDependencies.multidex
-    implementation project(path: ':moduleCommon')
-
+    api project(path: ':moduleCommon')
+    // 远程仓库集成方式（推荐）
+    implementation dataDependencies.thinkerCrashReportUpgrade
+    // 指定tinker依赖版本（注：应用升级1.3.5版本起，不再内置tinker）
+    implementation dataDependencies.tinkerandroidlib
     api viewDependencies.arouterapi
     annotationProcessor viewDependencies.aptaroutercompiler
     //eventbus
     implementation dataDependencies.eventbus
     //数据库
     api dataDependencies.greendao
+    api dataDependencies.greendaosqlcipher
     /*网络请求框架*/
     api dataDependencies.okgo
     api dataDependencies.okrx2
+
 }

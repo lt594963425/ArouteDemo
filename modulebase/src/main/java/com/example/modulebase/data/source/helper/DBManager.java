@@ -1,9 +1,10 @@
 package com.example.modulebase.data.source.helper;
 
 import com.android.utils.UIUtils;
-import com.data.source.db.DaoMaster;
-import com.data.source.db.DaoSession;
-import com.data.source.db.UserDao;
+import com.example.modulebase.data.source.db.DaoMaster;
+import com.example.modulebase.data.source.db.DaoSession;
+import com.example.modulebase.data.source.db.UserDao;
+
 
 /**
  * $activityName

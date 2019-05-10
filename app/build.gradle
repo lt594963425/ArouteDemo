@@ -2,8 +2,9 @@ apply plugin: 'com.android.application'
 apply from: 'tinker-support.gradle'
 apply from: 'multiple-channel.gradle'
 android {
-    compileSdkVersion 28
-    buildToolsVersion '28.0.3'
+    def globalConfiguration = rootProject.extensions.getByName("ext")
+    compileSdkVersion globalConfiguration.androidCompileSdkVersion
+    buildToolsVersion globalConfiguration.androidBuildToolsVersion
     signingConfigs {
         release {
             storeFile file("./keystore/airline.jks")
@@ -26,11 +27,11 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.example.aroutedemo2"
-        minSdkVersion 19
-        targetSdkVersion 28
-        versionCode 1
-        versionName "1.0." + versionCode
+        applicationId "com.example.aroutedemo"
+        minSdkVersion globalConfiguration.androidMinSdkVersion
+        targetSdkVersion globalConfiguration.androidTargetSdkVersion
+        versionCode globalConfiguration.versionCode
+        versionName globalConfiguration.versionName
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
         javaCompileOptions {
@@ -97,22 +98,27 @@ dependencies {
     implementation androidDependencies.cardview
     implementation androidDependencies.constraint
     implementation androidDependencies.multidex
-    implementation project(path: ':moduleCommon')
+
+    implementation viewDependencies.butterKnife
+    annotationProcessor viewDependencies.apt_butterKnife
 
     annotationProcessor viewDependencies.aptaroutercompiler
+
     //eventbus
     implementation dataDependencies.eventbus
 
     // 远程仓库集成方式（推荐）
     implementation dataDependencies.thinkerCrashReportUpgrade
-
     // 指定tinker依赖版本（注：应用升级1.3.5版本起，不再内置tinker）
     implementation dataDependencies.tinkerandroidlib
     implementation project(path: ':modulebase')
     implementation project(path: ':modulePicture')
-    if (!isModule.toBoolean()) {
+    if (!isModuleHome.toBoolean()) {
         implementation project(path: ':modulehome')
+    }
+    if (!isModuleUser.toBoolean()) {
         implementation project(path: ':moduleuser')
     }
+    implementation project(path: ':moduleCommon')
 
 }

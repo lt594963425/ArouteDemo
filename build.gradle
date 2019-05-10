@@ -2,12 +2,14 @@
 apply from: 'dependencies.gradle'
 buildscript {
     repositories {
+        mavenCentral()
         google()
         jcenter()
         
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.4.0'
+        classpath 'com.jakewharton:butterknife-gradle-plugin:9.0.0'
         classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2' // add plugin
         classpath "com.tencent.bugly:tinker-support:1.1.5"
         classpath 'com.meituan.android.walle:plugin:1.1.6'//多渠道打包

@@ -1,8 +1,9 @@
 package com.example.modulebase.data.source.dbutils;
 
 import com.android.utils.LogUtil;
-import com.data.source.db.UserDao;
+
 import com.example.modulebase.data.entity.User;
+import com.example.modulebase.data.source.db.UserDao;
 import com.example.modulebase.data.source.helper.DBManager;
 
 import org.greenrobot.greendao.query.QueryBuilder;

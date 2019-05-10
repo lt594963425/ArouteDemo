@@ -3,7 +3,7 @@ package com.example.modulebase.data.source.helper;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.data.source.db.DaoMaster;
+import com.example.modulebase.data.source.db.DaoMaster;
 
 
 /**

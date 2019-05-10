@@ -96,6 +96,7 @@ public class BaseActivity extends AppCompatActivity {
         StatusBarUtils.setStatusBarColor(this, Color.argb(0, 0, 0, 0), true);
     }
 
+
     /**
      * 保留状态栏高度
      */

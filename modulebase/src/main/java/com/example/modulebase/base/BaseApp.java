@@ -31,7 +31,7 @@ public class BaseApp implements IComponentApplication {
 
     @Override
     public void onCreate(Application application) {
-        DBManager.getInstance().onCreate();
+
         initHttpOkgo( application);
         initRouter(application);
         LogUtil.d("baseApp","------------------------初始化-----------------------------------");

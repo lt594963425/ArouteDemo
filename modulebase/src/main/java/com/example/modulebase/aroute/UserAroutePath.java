@@ -11,5 +11,7 @@ package com.example.modulebase.aroute;
 public class UserAroutePath {
     private static final String PREFIX = "/user/";
 
+    public static final String USER_ACTIVITY = PREFIX + "UserActivity";
     public static final String USER_FRAGMENT = PREFIX + "UserFragment";
+    public static final String USER_INFO = PREFIX + "UserInfoImpl";
 }
