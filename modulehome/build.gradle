@@ -62,4 +62,6 @@ dependencies {
     implementation viewDependencies.arouterapi
     annotationProcessor viewDependencies.aptaroutercompiler
     implementation project(path: ':modulebase')
+    implementation 'org.jetbrains:annotations-java5:15.0'
+    implementation 'com.android.support:support-annotations:28.0.0'
 }

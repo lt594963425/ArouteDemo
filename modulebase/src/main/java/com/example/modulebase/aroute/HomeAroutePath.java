@@ -13,4 +13,6 @@ public class HomeAroutePath {
 
     public static final String HOME_ACTIVITY = PREFIX + "HomeActivity";
     public static final String HOME_FRAGMENT = PREFIX + "HomeFragment";
+    public static final String HOME_PatImageView = PREFIX + "PatImageViewActivity";
+    public static final String HOME_TagLayout= PREFIX + "TagLayoutActivity";
 }

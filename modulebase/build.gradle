@@ -28,6 +28,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    //Realm 使用这个新数据库，他们太懒了 greendao很久没有维护了
     greendao {
         schemaVersion 1
         daoPackage 'com.example.modulebase.data.source.db' //这个填写你自己创建的路径
@@ -58,5 +60,16 @@ dependencies {
     /*网络请求框架*/
     api dataDependencies.okgo
     api dataDependencies.okrx2
+    //retrofit
+    api dataDependencies.retrofit
+    api dataDependencies.retrofitConverterGson
+    api dataDependencies.retrofit2AdapterRxjava
+    api dataDependencies.okhttp3LoggingInterceptor
+    api dataDependencies.gson
+    api dataDependencies.rxjava2
+    api dataDependencies.rxjavaandroid
+
+
+
 
 }

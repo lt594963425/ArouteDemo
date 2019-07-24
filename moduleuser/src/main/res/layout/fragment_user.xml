@@ -4,14 +4,84 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".UserActivity">
 
     <TextView
         android:id="@+id/tv_text"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_10"
         android:gravity="center"
-        android:text="Hello World! USER" />
+        android:text="Retrofit Hello World! USER"
+        android:visibility="visible" />
+
+    <EditText
+        android:id="@+id/content_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="talk" />
+
+    <Button
+        android:id="@+id/user_kml_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="KML" />
+
+    <Button
+        android:id="@+id/user_jinshan_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Get请求 金山翻译 Hello word" />
+
+    <Button
+        android:id="@+id/user_jinshan2_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="post 请求 金山翻译 " />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/token_input"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="4562155" />
+
+        <Button
+            android:id="@+id/token_set"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="发送" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <Button
+            android:id="@+id/login_btn"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_50"
+            android:text="登录" />
+
+        <Button
+            android:id="@+id/getUser_data_btn"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_50"
+            android:text="获取个人信息" />
+
+        <Button
+            android:id="@+id/exit_login_btn"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_50"
+            android:text="退出登录" />
+    </LinearLayout>
 
 </LinearLayout>

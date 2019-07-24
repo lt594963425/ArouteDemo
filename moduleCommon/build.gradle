@@ -27,7 +27,6 @@ dependencies {
 
     //rx
     api dataDependencies.rxbinding2
-    implementation androidDependencies.recyclerView
     //图片
     implementation viewDependencies.glide
 

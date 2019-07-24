@@ -11,8 +11,6 @@ import com.example.modulebase.base.BaseActivity;
  */
 @Route(path = HomeAroutePath.HOME_ACTIVITY)
 public class HomeActivity extends BaseActivity {
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

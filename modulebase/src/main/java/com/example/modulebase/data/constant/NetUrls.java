@@ -10,12 +10,14 @@ package com.example.modulebase.data.constant;
 
 
 public class NetUrls {
+    public static String R_BASE_NET = " http://fy.iciba.com/";
+    public static  String BASE_IP = "http://192.168.8.122:97/index.php/";
     //开发服务器（及时更新）
 //    private static final String BASE_URL = "http://192.168.8.122:97/index.php";
     //演示服务器（只有发版的时候才会更新）
 //    private static final String BASE_URL = "http://222.244.147.35:9797/index.php";
     //4.25号临时测试
-    private static final String BASE_URL = "http://192.168.8.122:100/index.php";
+    public static final String BASE_URL = "http://192.168.8.122:100/index.php";
     /**
      * 个人注册
      */

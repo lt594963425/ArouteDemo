@@ -21,10 +21,6 @@ android {
         }
     }
 
-    //recommend
-    dexOptions {
-        jumboMode = true
-    }
 
     defaultConfig {
         applicationId "com.example.aroutedemo"
@@ -66,6 +62,11 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    //thinker
+    dexOptions {
+        jumboMode = true
+    }
+
     sourceSets {
         main {
             jniLibs.srcDirs = ['libs']

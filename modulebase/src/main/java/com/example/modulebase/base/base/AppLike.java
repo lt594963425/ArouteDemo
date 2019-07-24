@@ -31,7 +31,7 @@ import java.util.Locale;
 
 public class AppLike extends DefaultApplicationLike {
     //正式发布 APP_ID 改为 35f64f80bb
-    public static final String APP_ID = "6fc6356e25";
+    public static final String APP_ID = "1638ccad67";
     public static final String APP_CHANNEL = "DEBUG"; // TODO 自定义渠道
     private static final String TAG = "OnUILifecycleListener";
 

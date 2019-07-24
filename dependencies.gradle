@@ -41,6 +41,11 @@ ext {
     rxbinding2Version = '2.1.1'
     rxjavaVersion = '2.0.5'
     rxjavaAndroidVersion = '2.0.1'
+    retrofitVersion = '2.6.0'
+    retrofitConverterGsonVersion = '2.6.0'
+    retrofit2AdapterRxjavaVersion = '2.6.0'
+    okhttp3LoggingInterceptorVersion = '3.8.0'
+
     webSocketVersion = '1.4.0'
     arouterApiVersion = '1.4.1'
     arouterCompilerVersion = '1.2.2'
@@ -91,5 +96,10 @@ ext {
             rxjava2                  : "io.reactivex.rxjava2:rxjava:${rxjavaVersion}",
             rxjavaandroid            : "io.reactivex.rxjava2:rxandroid:${rxjavaAndroidVersion}",
             webSocket                : "org.java-websocket:Java-WebSocket:${webSocketVersion}",
+            retrofit                 : "com.squareup.retrofit2:retrofit:${retrofitVersion}",
+            retrofitConverterGson    : "com.squareup.retrofit2:converter-gson:${retrofitConverterGsonVersion}",
+            retrofit2AdapterRxjava   : "com.squareup.retrofit2:adapter-rxjava2:${retrofit2AdapterRxjavaVersion}",
+            okhttp3LoggingInterceptor: "com.squareup.okhttp3:logging-interceptor:${okhttp3LoggingInterceptorVersion}",
+
     ]
 }

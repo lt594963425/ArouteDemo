@@ -55,6 +55,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
 
     private CrashHandler() {
         logPath = FileUtils.getDir("Crash");
+        LogUtil.e("路径", logPath);
     }
 
     /**

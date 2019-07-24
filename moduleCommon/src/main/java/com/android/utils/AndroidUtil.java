@@ -151,7 +151,12 @@ public class AndroidUtil {
         Display display = manager.getDefaultDisplay();
         return display.getWidth();
     }
-
+    public static int getScreenHeight(Context context) {
+        WindowManager manager = (WindowManager) context
+                .getSystemService(Context.WINDOW_SERVICE);
+        Display display = manager.getDefaultDisplay();
+        return display.getHeight();
+    }
     /**
      * 根据手机的分辨率从 px(像素) 的单位 转成为 dp
      */
