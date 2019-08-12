@@ -5,6 +5,7 @@ import com.android.utils.NetworkUtils;
 import com.example.modulebase.base.TInterceptor;
 import com.example.modulebase.data.constant.NetUrls;
 import com.example.modulebase.data.source.helper.SPManager;
+import com.example.modulebase.utils.RxObservableTransformer;
 import com.lzy.okgo.cookie.CookieJarImpl;
 import com.lzy.okgo.cookie.store.SPCookieStore;
 
@@ -55,6 +56,7 @@ public class RetrofitClient {
         /**
          * 设置缓存
          */
+
         File cacheFile = new File(App.getInstance().getExternalCacheDir(), CACHE_NAME);
         Cache cache = new Cache(cacheFile, 1024 * 1024 * 50);
         Interceptor cacheInterceptor = new Interceptor() {

@@ -15,6 +15,7 @@ import com.example.modulebase.base.CrashHandler;
 import com.example.modulebase.base.IComponentApplication;
 import com.example.modulebase.base.TInterceptor;
 import com.example.modulebase.data.constant.NetUrls;
+import com.example.modulebase.data.source.db.RealmHelper;
 import com.example.modulebase.data.source.helper.DBManager;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheEntity;
@@ -34,11 +35,9 @@ import io.reactivex.ObservableSource;
 import io.reactivex.ObservableTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import okhttp3.OkHttpClient;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
-
 
 /**
  * $activityName
@@ -50,6 +49,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class App extends TinkerApplication {
     private static App INSTANCE;
+    public static RealmHelper realmHelper;
 
 
     public App() {
@@ -70,6 +70,15 @@ public class App extends TinkerApplication {
         INSTANCE = this;
         CrashHandler.getInstance().init(this);
         DBManager.getInstance().onCreate();
+        //初始化数据库
+        Realm.init(getApplicationContext());
+        RealmConfiguration configuration = new RealmConfiguration.Builder()
+                .name(RealmHelper.DB_NAME)
+                .deleteRealmIfMigrationNeeded()
+                .schemaVersion(0)
+                .build();
+        Realm.setDefaultConfiguration(configuration);
+        realmHelper = new RealmHelper();
         initNotificationManager();
         initHttpOkgo(this);
         initRouter(this);
@@ -170,5 +179,11 @@ public class App extends TinkerApplication {
 
     };
 
+    public static RealmHelper getRealmHelper() {
+        return realmHelper;
+    }
 
+    public static void setRealmHelper(RealmHelper realmHelper) {
+        App.realmHelper = realmHelper;
+    }
 }

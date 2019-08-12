@@ -49,6 +49,10 @@ ext {
     webSocketVersion = '1.4.0'
     arouterApiVersion = '1.4.1'
     arouterCompilerVersion = '1.2.2'
+
+
+    dagger2Version = "2.0.2"
+
     androidDependencies = [
             recyclerView: "com.android.support:recyclerview-v7:${supportLibraryVersion}",
             appcompat_v7: "com.android.support:appcompat-v7:${supportLibraryVersion}",
@@ -100,6 +104,7 @@ ext {
             retrofitConverterGson    : "com.squareup.retrofit2:converter-gson:${retrofitConverterGsonVersion}",
             retrofit2AdapterRxjava   : "com.squareup.retrofit2:adapter-rxjava2:${retrofit2AdapterRxjavaVersion}",
             okhttp3LoggingInterceptor: "com.squareup.okhttp3:logging-interceptor:${okhttp3LoggingInterceptorVersion}",
-
+            dagger                   : "com.google.dagger:dagger:${dagger2Version}",
+            daggerCompiler           : "com.google.dagger:dagger-compiler:${dagger2Version}",
     ]
 }
