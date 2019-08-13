@@ -8,6 +8,7 @@ import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.android.utils.LogUtil;
+import com.android.utils.UIUtils;
 import com.android.view.XToolbar;
 import com.example.modulebase.aroute.UserAroutePath;
 import com.example.modulebase.base.BaseActivity;
@@ -39,7 +40,7 @@ public class UserActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
         ButterKnife.bind(this);
-        mXToolbar.setTitle("我的");
+        mXToolbar.setTitle("小园园专用");
         ARouter.getInstance().inject(this);
         //LogUtil.e("收到信息", "名字：" + name + "，年龄：" + age + "，性别：" + sex + "," + mUser.toString());
         mXToolbar.setNavigationOnClickListener(new View.OnClickListener() {

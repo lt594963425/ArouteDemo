@@ -81,7 +81,4 @@ dependencies {
     api dataDependencies.dagger
     annotationProcessor dataDependencies.daggerCompiler
 
-
-
-
 }

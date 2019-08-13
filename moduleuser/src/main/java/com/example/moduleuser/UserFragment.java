@@ -1,310 +1,143 @@
 package com.example.moduleuser;
 
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.android.utils.FastJsonUtils;
-import com.android.utils.FileUtils;
-import com.android.utils.LogUtil;
-import com.android.utils.TextUtil;
-import com.android.utils.ToastUtils;
+import com.android.rxbus2.RxBus;
+import com.android.rxbus2.Subscribe;
+import com.android.rxbus2.ThreadMode;
+import com.android.utils.UIUtils;
+import com.android.view.colorpicker.ColorPickerView;
+import com.android.view.colorpicker.OnColorChangedListener;
+import com.android.view.colorpicker.OnColorSelectedListener;
+import com.android.view.colorpicker.slider.AlphaSlider;
+import com.android.view.colorpicker.slider.LightnessSlider;
 import com.example.modulebase.aroute.UserAroutePath;
 import com.example.modulebase.base.BaseFragment;
-import com.example.modulebase.base.base.App;
-import com.example.modulebase.base.base.RetrofitApi;
-import com.example.modulebase.base.base.RetrofitClient;
-import com.example.modulebase.data.entity.LPersonUserBean;
-import com.example.modulebase.data.entity.Translation;
-import com.example.modulebase.data.entity.Translation1;
-import com.example.modulebase.utils.RxObservableTransformer;
+import com.example.moduleuser.utils.AnimalUtil;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.ObservableTransformer;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 @Route(path = UserAroutePath.USER_FRAGMENT)
 public class UserFragment extends BaseFragment {
+    EditText suspensionTextEt;
+    TextView suspensionTextSize;
+    SeekBar seekbarLevel;
+    TextView suspensionTextColor;
+    TextView suspensionColorTv;
+    LinearLayout parentContaintLly;
+    ColorPickerView colorPickerView;
+    LightnessSlider vLightnessSlider;
+    AlphaSlider vAlphaSlider;
+    Button openSuspension;
+
+
+    private int textSize = 15;
+    private boolean expandView = false;
+    public LinearLayout mColorPickViewLly;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user, null);
-        final TextView tv_text = view.findViewById(R.id.tv_text);
-        Button user_kml_btn = view.findViewById(R.id.user_kml_btn);
-        Button userJinshanBtn = view.findViewById(R.id.user_jinshan_btn);
-        Button userjinshan2btn = view.findViewById(R.id.user_jinshan2_btn);
-        final EditText tokenInput = view.findViewById(R.id.token_input);
-        final EditText contentInput = view.findViewById(R.id.content_input);
+        if (!RxBus.getDefault().isRegistered(this)) {
+            RxBus.getDefault().register(this);
+        }
+        mColorPickViewLly = view.findViewById(R.id.color_pick_view_lly);
+        suspensionTextEt = view.findViewById(R.id.suspension_text_et);
+        suspensionTextSize = view.findViewById(R.id.suspension_text_size);
+        seekbarLevel = view.findViewById(R.id.seekbar_level);
+        suspensionTextColor = view.findViewById(R.id.suspension_text_color);
+        suspensionColorTv = view.findViewById(R.id.suspension_color_tv);
+        parentContaintLly = view.findViewById(R.id.parent_containt_lly);
+        colorPickerView = view.findViewById(R.id.color_picker_view);
+        vLightnessSlider = view.findViewById(R.id.v_lightness_slider);
+        vAlphaSlider = view.findViewById(R.id.v_alpha_slider);
+        openSuspension = view.findViewById(R.id.open_suspension);
+        initView();
 
-        //***************************************************************
-        final Button loginBtn = view.findViewById(R.id.login_btn);
-        final Button exitLoginBtn = view.findViewById(R.id.exit_login_btn);
-        final Button getUserDataBtn = view.findViewById(R.id.getUser_data_btn);
-        getUserDataBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                //获取个人数据
-                RetrofitClient.getRetrofit().getRetrofitApi()
-                        .getUserData()
-                        .compose(RxObservableTransformer.<Response<String>>transformer())
-                        .subscribe(new Observer<Response<String>>() {
-                            @Override
-                            public void onSubscribe(Disposable d) {
-
-                            }
-
-                            @Override
-                            public void onNext(Response<String> stringResponse) {
-                                LogUtil.e("结果 个人信息", stringResponse.body());
-
-
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-
-                            }
-
-                            @Override
-                            public void onComplete() {
-
-                            }
-                        });
-
-            }
-        });
-        loginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                HashMap<String, Object> params = new HashMap<>();
-                params.put("cellphone", "15974255013");
-                params.put("password", "88888888");
-                params.put("type", 2);
-
-                //登录
-                RetrofitClient.getRetrofit().getRetrofitApi()
-                        .loginResult(params)
-                        .compose(RxObservableTransformer.<ResponseBody>transformer())
-                        .subscribe(new Observer<ResponseBody>() {
-                            @Override
-                            public void onSubscribe(Disposable d) {
-
-                            }
-
-                            @Override
-                            public void onNext(ResponseBody stringResponse) {
-
-                                String bodyString = null;
-                                try {
-                                    bodyString = stringResponse.string();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                                LogUtil.e("结果", bodyString);
-                                try {
-                                    JSONObject jsonObject1 = new JSONObject(bodyString);
-                                    String code = jsonObject1.optString("code");
-                                    String msgCustomer = jsonObject1.optString("msg_customer");
-                                    if ("1".equals(code)) {
-                                        JSONObject dataJSONObject = jsonObject1.optJSONObject("data");
-                                        LPersonUserBean userBean = FastJsonUtils.toBean(dataJSONObject.toString(), LPersonUserBean.class);
-                                        ToastUtils.showToast("登录成功！");
-                                        RetrofitClient.getRetrofit().setToken(userBean.getToken());
-                                        //todo 保存
-                                    }
-                                    if ("0".equals(code)) {
-                                        ToastUtils.showToast("登陆失败，" + msgCustomer);
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-
-
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-
-                            }
-
-                            @Override
-                            public void onComplete() {
-
-                            }
-                        });
-
-            }
-        });
-        exitLoginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //退出登录
-
-                RetrofitClient.getRetrofit().getRetrofitApi()
-                        .exitLogin()
-                        .compose(RxObservableTransformer.<Response<String>>transformer())
-                        .subscribe(new Observer<Response<String>>() {
-                            @Override
-                            public void onSubscribe(Disposable d) {
-
-                            }
-
-                            @Override
-                            public void onNext(Response<String> stringResponse) {
-
-                                String bodyString = stringResponse.body();
-                                LogUtil.e("结果 退出登录", bodyString);
-
-
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-
-                            }
-
-                            @Override
-                            public void onComplete() {
-
-                            }
-                        });
-
-            }
-        });
-
-
-        Button tokenSet = view.findViewById(R.id.token_set);
-
-        tokenSet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (TextUtils.isEmpty(tokenInput.getText())) {
-                    return;
-                }
-                RetrofitClient.getRetrofit().setToken(tokenInput.getText().toString());
-            }
-        });
-
-        user_kml_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ToastUtils.showToast("点击");
-                String logPath = FileUtils.getDir("Crash");
-                LogUtil.e("路径", logPath);
-            }
-        });
-        userJinshanBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Map<String, Object> h = new HashMap<>();
-                //?a=fy&f=auto&t=auto&w=hello%20world
-                h.put("a", "fy");
-                h.put("f", "auto");
-                h.put("t", "auto");
-                if (!TextUtils.isEmpty(contentInput.getText())) {
-                    h.put("w", contentInput.getText().toString());
-                } else {
-                    h.put("w", "hello world");
-                }
-                RetrofitClient.getRetrofit()
-                        .getRetrofitApi()
-                        .getResultCall(h)
-                        .compose(RxObservableTransformer.<Translation>transformer())
-                        .subscribe(new Observer<Translation>() {
-                            @Override
-                            public void onSubscribe(Disposable d) {
-                                addDisposable(d);
-                            }
-
-                            @Override
-                            public void onNext(Translation translation) {
-                                LogUtil.e("数据 1", translation.toString() + "线程：" + Thread.currentThread().getName());
-                                tv_text.setText(translation.toString());
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-
-                            }
-
-                            @Override
-                            public void onComplete() {
-
-                            }
-                        });
-
-            }
-        });
-        userjinshan2btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                RetrofitClient.getRetrofit()
-                        .getRetrofitApi()
-                        .getResultCall2("I love you")
-                        .compose(RxObservableTransformer.<Translation1>transformer())
-                        .retry(5)
-                        .subscribe(new Observer<Translation1>() {
-                            @Override
-                            public void onSubscribe(Disposable d) {
-                                addDisposable(d);
-                            }
-
-                            @Override
-                            public void onNext(Translation1 translation1) {
-                                try {
-
-                                    LogUtil.e("数据", translation1.toString());
-                                    tv_text.setText(translation1.getTranslateResult().get(0).toString());
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            }
-
-                            @Override
-                            public void onError(Throwable t) {
-                                ToastUtils.showToast("请求失败");
-                                System.out.println(t.getMessage());
-                            }
-
-                            @Override
-                            public void onComplete() {
-
-                            }
-                        });
-
-            }
-        });
         return view;
+    }
+
+    private void initView() {
+        colorPickerView.addOnColorChangedListener(new OnColorChangedListener() {
+            @Override
+            public void onColorChanged(int selectedColor) {
+                suspensionTextEt.setTextColor(selectedColor);
+                suspensionColorTv.setBackgroundColor(selectedColor);
+            }
+        });
+        colorPickerView.addOnColorSelectedListener(new OnColorSelectedListener() {
+            @Override
+            public void onColorSelected(int selectedColor) {
+                suspensionTextEt.setTextColor(selectedColor);
+                suspensionColorTv.setBackgroundColor(selectedColor);
+            }
+        });
+
+        parentContaintLly.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (expandView) {
+                    expandView = false;
+                    AnimalUtil.startAnimal(mColorPickViewLly, UIUtils.dip2Px(370), 0);
+                    AnimalUtil.startRotation(parentContaintLly, 0, 90);
+                } else {
+                    expandView = true;
+                    mColorPickViewLly.setVisibility(View.VISIBLE);
+                    AnimalUtil.startAnimal(mColorPickViewLly, 0, UIUtils.dip2Px(370));
+                    AnimalUtil.startRotation(parentContaintLly, 0, 90);
+                }
+
+            }
+        });
+        seekbarLevel.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                textSize = progress + 1;
+                if (fromUser) {
+                    suspensionTextSize.setText("悬浮字体大小：" + textSize);
+                    suspensionTextEt.setTextSize(textSize);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventBus() {
+
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         dispose();
+        if (RxBus.getDefault().isRegistered(this)) {
+            RxBus.getDefault().unregister(this);
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
     }
 }

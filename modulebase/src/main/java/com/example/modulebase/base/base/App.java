@@ -61,7 +61,6 @@ public class App extends TinkerApplication {
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         MultiDex.install(this);
-
     }
 
     @Override

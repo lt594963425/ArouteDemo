@@ -39,5 +39,5 @@ dependencies {
     //高德定位
     implementation viewDependencies.locationmap
     implementation project(path: ':modulePicture')
-
+    api project(':RxKit')
 }
