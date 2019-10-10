@@ -1,6 +1,7 @@
 package com.example.modulehome.view;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,6 +21,7 @@ import com.android.utils.LogUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.modulehome.R;
 import com.example.modulehome.adapter.MonthAdapter;
+import com.example.modulehome.adapter.TitleNumberMonthAdapter;
 import com.example.modulehome.adapter.YearAdapter;
 import com.example.modulehome.adapter.YearAndMonthAdapter;
 import com.example.modulehome.entity.DateEntity;
@@ -369,7 +371,7 @@ public class CalendarSelectedView extends LinearLayout implements MonthAdapter.O
         if (mYearAdapter != null) {
             mYearAdapter.setSelectedId(yearRVPisition);
         }
-        smoothMoveToPosition(mRvCalendar, nowMonth, false);
+        smoothMoveToPosition(mRvCalendar, mToPosition, false);
         updateTitleText();
     }
 
@@ -424,7 +426,7 @@ public class CalendarSelectedView extends LinearLayout implements MonthAdapter.O
             calendar.add(Calendar.MONTH, 1);
 
         }
-        mTvCalTitle.setText(monthList.get(0).getTitle());
+        mTvCalTitle.setText(monthList.get(mToPosition).getYear() + "年");
         mAdapter.setNewData(monthList);
     }
 
