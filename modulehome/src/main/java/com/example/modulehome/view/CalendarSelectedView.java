@@ -398,16 +398,16 @@ public class CalendarSelectedView extends LinearLayout implements MonthAdapter.O
             //月份
             for (int j = 1; j <= maxDayOfMonth; j++) {
                 DateEntity de = new DateEntity();
-                if (i > nowMonth + 1) {
+                if (i > nowMonth && nowYear == nyear) {
                     de.setType(4);
                 } else {
-                    if (i == nowMonth) {
+                    if (i == nowMonth && nowYear == nyear) {
                         de.setType(j > nowDay ? 4 : 0);
                     } else {
                         de.setType(0);
                     }
                 }
-                if (nowDay == j && month == nowMonth + 1) {
+                if (nowDay == j && month == nowMonth + 1 && nowYear == nyear) {
                     de.setDate(77);
                 } else {
                     de.setDate(j);

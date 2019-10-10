@@ -262,7 +262,7 @@
 
                 <ImageView
                     android:id="@+id/before_year"
-                    android:layout_width="@dimen/dp_50"
+                    android:layout_width="@dimen/dp_63"
                     android:layout_height="match_parent"
                     android:layout_gravity="start"
                     android:padding="@dimen/dp_5"
@@ -281,7 +281,7 @@
 
                 <ImageView
                     android:id="@+id/after_year"
-                    android:layout_width="@dimen/dp_50"
+                    android:layout_width="@dimen/dp_63"
                     android:layout_height="match_parent"
                     android:padding="@dimen/dp_5"
                     android:rotation="180"
