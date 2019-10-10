@@ -1,20 +1,33 @@
 package com.example.moduleuser;
 
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.util.TypedValue;
+import android.provider.Settings;
+import android.support.annotation.RequiresApi;
+import android.support.v7.widget.SwitchCompat;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.android.rxbus2.RxBus;
 import com.android.rxbus2.Subscribe;
 import com.android.rxbus2.ThreadMode;
+import com.example.moduleuser.event.BackGroundServiceEvent;
+import com.android.rxbus2.RxBus;
+import com.android.utils.ToastUtils;
 import com.android.utils.UIUtils;
 import com.android.view.colorpicker.ColorPickerView;
 import com.android.view.colorpicker.OnColorChangedListener;
@@ -23,7 +36,16 @@ import com.android.view.colorpicker.slider.AlphaSlider;
 import com.android.view.colorpicker.slider.LightnessSlider;
 import com.example.modulebase.aroute.UserAroutePath;
 import com.example.modulebase.base.BaseFragment;
+import com.example.modulebase.data.source.helper.SPManager;
+import com.example.moduleuser.event.SuoEvent;
+import com.example.moduleuser.event.SuoServerEvent;
+import com.example.moduleuser.server.BackGroundService;
 import com.example.moduleuser.utils.AnimalUtil;
+import com.jakewharton.rxbinding2.widget.RxTextView;
+
+import io.reactivex.functions.Consumer;
+
+import static com.android.utils.UIUtils.getPackageName;
 
 
 @Route(path = UserAroutePath.USER_FRAGMENT)
@@ -39,10 +61,22 @@ public class UserFragment extends BaseFragment {
     AlphaSlider vAlphaSlider;
     Button openSuspension;
 
-
-    private int textSize = 15;
     private boolean expandView = false;
     public LinearLayout mColorPickViewLly;
+    public SwitchCompat mSwitchCompat;
+    //文字内容
+    public String mTextString = "";
+    //字体类型
+    public int mTextType = Typeface.NORMAL;
+    //字体颜色
+    public int mTextColor = Color.BLACK;
+    //字体大小
+    private int mTextSize = 15;
+    public RadioButton mFontType1;
+    public RadioButton mFontType2;
+    public RadioButton mFontType3;
+    public RadioButton mFontType4;
+    public ImageView mClearText;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -50,6 +84,7 @@ public class UserFragment extends BaseFragment {
         if (!RxBus.getDefault().isRegistered(this)) {
             RxBus.getDefault().register(this);
         }
+
         mColorPickViewLly = view.findViewById(R.id.color_pick_view_lly);
         suspensionTextEt = view.findViewById(R.id.suspension_text_et);
         suspensionTextSize = view.findViewById(R.id.suspension_text_size);
@@ -61,24 +96,93 @@ public class UserFragment extends BaseFragment {
         vLightnessSlider = view.findViewById(R.id.v_lightness_slider);
         vAlphaSlider = view.findViewById(R.id.v_alpha_slider);
         openSuspension = view.findViewById(R.id.open_suspension);
+        mSwitchCompat = view.findViewById(R.id.switch_compat);
+        mClearText = view.findViewById(R.id.clear_text);
+        //字体类型
+        mFontType1 = view.findViewById(R.id.text_type_1);
+        mFontType2 = view.findViewById(R.id.text_type_2);
+        mFontType3 = view.findViewById(R.id.text_type_3);
+        mFontType4 = view.findViewById(R.id.text_type_4);
+
+        mTextString = SPManager.getString(SPManager.SP_MAIN_FLAG, "mTextString", mTextString);
+        mTextType = SPManager.getInt(SPManager.SP_MAIN_FLAG, "mTextType", mTextType);
+        mTextColor = SPManager.getInt(SPManager.SP_MAIN_FLAG, "mTextColor", mTextColor);
+        mTextSize = SPManager.getInt(SPManager.SP_MAIN_FLAG, "mTextSize", mTextSize);
+        suspensionTextEt.setText(mTextString);
+        suspensionTextEt.setTypeface(Typeface.DEFAULT, mTextType);
+        suspensionTextEt.setTextColor(mTextColor);
+        suspensionTextEt.setTextSize(mTextSize);
+        seekbarLevel.setProgress(mTextSize - 1);
+
         initView();
 
         return view;
     }
 
     private void initView() {
+        openSuspension.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void onClick(View v) {
+                startFloatingButtonService();
+            }
+        });
+        addDisposable(RxTextView.textChanges(suspensionTextEt)
+                .subscribe(new Consumer<CharSequence>() {
+                    @Override
+                    public void accept(CharSequence charSequence) throws Exception {
+                        if (TextUtils.isEmpty(charSequence)) {
+                            mClearText.setVisibility(View.GONE);
+                            return;
+                        }
+                        if (TextUtils.isEmpty(charSequence.toString())) {
+                            mClearText.setVisibility(View.GONE);
+                            return;
+                        }
+                        if (TextUtils.isEmpty(charSequence.toString().trim())) {
+                            mClearText.setVisibility(View.GONE);
+                            return;
+                        }
+                        mTextString = charSequence.toString();
+                        SPManager.saveString(SPManager.SP_MAIN_FLAG, "mTextString", mTextString);
+                        mClearText.setVisibility(View.VISIBLE);
+                        postChangeText();
+                    }
+                }));
+
+        mClearText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mTextString = "";
+                suspensionTextEt.setText(mTextString);
+                SPManager.saveString(SPManager.SP_MAIN_FLAG, "mTextString", mTextString);
+                postChangeText();
+            }
+        });
+        mSwitchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                RxBus.getDefault().post(new SuoServerEvent(isChecked));
+            }
+        });
         colorPickerView.addOnColorChangedListener(new OnColorChangedListener() {
             @Override
             public void onColorChanged(int selectedColor) {
+                mTextColor = selectedColor;
                 suspensionTextEt.setTextColor(selectedColor);
                 suspensionColorTv.setBackgroundColor(selectedColor);
+                SPManager.saveInt(SPManager.SP_MAIN_FLAG, "mTextColor", mTextColor);
+                postChangeText();
             }
         });
         colorPickerView.addOnColorSelectedListener(new OnColorSelectedListener() {
             @Override
             public void onColorSelected(int selectedColor) {
+                mTextColor = selectedColor;
                 suspensionTextEt.setTextColor(selectedColor);
                 suspensionColorTv.setBackgroundColor(selectedColor);
+                SPManager.saveInt(SPManager.SP_MAIN_FLAG, "mTextColor", mTextColor);
+                postChangeText();
             }
         });
 
@@ -87,12 +191,12 @@ public class UserFragment extends BaseFragment {
             public void onClick(View v) {
                 if (expandView) {
                     expandView = false;
-                    AnimalUtil.startAnimal(mColorPickViewLly, UIUtils.dip2Px(370), 0);
+                    AnimalUtil.startAnimal(mColorPickViewLly, UIUtils.dip2Px(400), 0);
                     AnimalUtil.startRotation(parentContaintLly, 0, 90);
                 } else {
                     expandView = true;
                     mColorPickViewLly.setVisibility(View.VISIBLE);
-                    AnimalUtil.startAnimal(mColorPickViewLly, 0, UIUtils.dip2Px(370));
+                    AnimalUtil.startAnimal(mColorPickViewLly, 0, UIUtils.dip2Px(400));
                     AnimalUtil.startRotation(parentContaintLly, 0, 90);
                 }
 
@@ -101,11 +205,13 @@ public class UserFragment extends BaseFragment {
         seekbarLevel.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                textSize = progress + 1;
+                mTextSize = progress + 1;
                 if (fromUser) {
-                    suspensionTextSize.setText("悬浮字体大小：" + textSize);
-                    suspensionTextEt.setTextSize(textSize);
+                    suspensionTextEt.setTextSize(mTextSize);
+                    SPManager.saveInt(SPManager.SP_MAIN_FLAG, "mTextSize", mTextSize);
+
                 }
+                postChangeText();
             }
 
             @Override
@@ -118,12 +224,52 @@ public class UserFragment extends BaseFragment {
 
             }
         });
+        mFontType1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mTextType = Typeface.NORMAL;
+                suspensionTextEt.setTypeface(Typeface.DEFAULT, mTextType);
+                SPManager.saveInt(SPManager.SP_MAIN_FLAG, "mTextType", mTextType);
+                postChangeText();
+            }
+        });
+        mFontType2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mTextType = Typeface.ITALIC;
+                suspensionTextEt.setTypeface(Typeface.DEFAULT, mTextType);
+                SPManager.saveInt(SPManager.SP_MAIN_FLAG, "mTextType", mTextType);
+                postChangeText();
+            }
+        });
+        mFontType3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mTextType = Typeface.BOLD;
+                suspensionTextEt.setTypeface(Typeface.DEFAULT, mTextType);
+                SPManager.saveInt(SPManager.SP_MAIN_FLAG, "mTextType", mTextType);
+                postChangeText();
 
+            }
+        });
+        mFontType4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mTextType = Typeface.BOLD_ITALIC;
+                suspensionTextEt.setTypeface(Typeface.DEFAULT, mTextType);
+                SPManager.saveInt(SPManager.SP_MAIN_FLAG, "mTextType", mTextType);
+                postChangeText();
+            }
+        });
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventBus() {
-
+    public void postChangeText() {
+        BackGroundServiceEvent backGroundService = new BackGroundServiceEvent();
+        backGroundService.setString(mTextString);
+        backGroundService.setTextSize(mTextSize);
+        backGroundService.setTextType(mTextType);
+        backGroundService.setTextColor(mTextColor);
+        RxBus.getDefault().post(backGroundService);
     }
 
     @Override
@@ -138,6 +284,38 @@ public class UserFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+
+    }
+
+    private int x = 221;
+    private int y = 1857;
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void startFloatingButtonService() {
+        if (BackGroundService.isStarted) {
+            return;
+        }
+        if (!Settings.canDrawOverlays(getActivity())) {
+            ToastUtils.showToast("当前无权限，请授权");
+            startActivityForResult(new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName())), 0);
+        } else {
+            Intent startIntent = new Intent(getActivity(), BackGroundService.class);
+            startIntent.putExtra("mTextString", mTextString);
+            startIntent.putExtra("mTextType", mTextType);
+            startIntent.putExtra("mTextColor", mTextColor);
+            startIntent.putExtra("mTextSize", mTextSize);
+            if (getActivity() != null) {
+                getActivity().startService(startIntent);
+            }
+
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventBus(SuoEvent suoEvent) {
+        if (mSwitchCompat!=null){
+            mSwitchCompat.setChecked(suoEvent.isIssuo());
+        }
 
     }
 }

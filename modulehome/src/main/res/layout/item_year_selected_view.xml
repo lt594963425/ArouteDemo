@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginStart="@dimen/dp_7"
+    android:layout_marginTop="@dimen/dp_5"
+    android:layout_marginEnd="@dimen/dp_7"
+    android:layout_marginBottom="@dimen/dp_5">
+
+    <TextView
+
+        android:id="@+id/tab_text_tv"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_35"
+        android:background="@drawable/bg_ad_tab_unselected"
+        android:button="@null"
+        android:checked="true"
+        android:gravity="center"
+        android:paddingTop="@dimen/dp_4"
+        android:paddingBottom="@dimen/dp_4"
+        android:text="2019"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_12">
+
+    </TextView>
+</LinearLayout>

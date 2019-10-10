@@ -4,7 +4,8 @@
 
     <application
       >
-        <activity android:name=".UserActivity">
+        <activity android:name=".UserActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize">
         </activity>
     </application>
 

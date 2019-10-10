@@ -199,12 +199,15 @@
 
 
 
+-keep  class com.sensetime.senseid.sdk.**{*;}
+
 -keep public class **.entity.** {*;}
 -keep public class **.bean.** {*;}
 
 -keepclassmembers class  **.entity.** {
     public <init>();
 }
+
 -keepclassmembers class  **.bean.**{
     public <init>();
 }
@@ -276,23 +279,17 @@
 
 # For using GSON @Expose annotation
 -keepattributes *Annotation*
-
-# Gson specific classes
 -dontwarn sun.misc.**
-#-keep class com.google.gson.stream.** { *; }
-# Prevent proguard from stripping interface information from TypeAdapterFactory,
-# JsonSerializer, JsonDeserializer instances (so they can be used in @JsonAdapter)
 -keep class * implements com.google.gson.TypeAdapterFactory
 -keep class * implements com.google.gson.JsonSerializer
 -keep class * implements com.google.gson.JsonDeserializer
 -keepattributes Signature
-
+-keepattributes EnclosingMethod
 # For using GSON @Expose annotation
 -keepattributes *Annotation*
-
 # Gson specific classes
 -keep class sun.misc.Unsafe { *; }
-#-keep class com.google.gson.stream.** { *; }
+-keep class com.google.gson.stream.** { *; }
 
 
 # eventbus
@@ -316,6 +313,18 @@ public static java.lang.String TABLENAME;
 -dontwarn org.greenrobot.greendao.database.**
 # If you do not use RxJava:
 -dontwarn rx.**
+
+-dontwarn sun.misc.**
+-keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
+    long producerIndex;
+    long consumerIndex;
+}
+-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
+    rx.internal.util.atomic.LinkedQueueNode producerNode;
+}
+-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
+    rx.internal.util.atomic.LinkedQueueNode consumerNode;
+}
 # 支付宝
 -dontshrink
 -dontpreverify
@@ -420,3 +429,56 @@ public static java.lang.String TABLENAME;
 
 # If single-type injection is used, that is, no interface is defined to implement IProvider, the following rules need to be added to protect the implementation
 # -keep class * implements com.alibaba.android.arouter.facade.template.IProvider
+#微信
+-dontwarn com.tencent.mm.**
+
+-keep class com.tencent.mm.**{*;}
+#支付宝
+# 保留该包下不被混淆
+-keep public class com.alipay.share.sdk.**
+# 不混淆某个类
+-keep public class com.alipay.share.sdk.openapi.SendMessageToZFB { *; }
+
+-libraryjars ../modulebase/libs/alibapshare20161108.jar
+
+-keep class com.alipay.android.app.IAlixPay{*;}
+-keep class com.alipay.android.app.IAlixPay$Stub{*;}
+-keep class com.alipay.android.app.IRemoteServiceCallback{*;}
+-keep class com.alipay.android.app.IRemoteServiceCallback$Stub{*;}
+-keep class com.alipay.sdk.app.PayTask{ public *;}
+-keep class com.alipay.sdk.app.AuthTask{ public *;}
+#  retrofit2混淆
+-dontwarn retrofit2.**
+-keep class retrofit2.** { *; }
+-keepattributes Signature
+-keepattributes Exceptions
+# Platform calls Class.forName on types which do not exist on Android to determine platform.
+-dontnote retrofit2.Platform
+# Platform used when running on RoboVM on iOS. Will not be used at runtime.
+-dontnote retrofit2.Platform$IOS$MainThreadExecutor
+# Platform used when running on Java 8 VMs. Will not be used at runtime.
+-dontwarn retrofit2.Platform$Java8
+
+-dontwarn javax.annotation.**
+-dontwarn javax.inject.**
+# OkHttp3
+-dontwarn okhttp3.logging.**
+-keep class okhttp3.internal.**{*;}
+-dontwarn okio.**
+-dontwarn okhttp3.**
+-keep class okhttp3.**{*;}
+
+#okgo   
+-dontwarn com.lzy.okgo.**
+-keep class com.lzy.okgo.**{*;}
+#okrx   
+-dontwarn com.lzy.okrx.**
+-keep class com.lzy.okrx.**{*;}
+#okserver   
+-dontwarn com.lzy.okserver.**
+-keep class com.lzy.okserver.**{*;}
+
+#okio   
+-dontwarn okio.**
+-keep class okio.**{*;}
+

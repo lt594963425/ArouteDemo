@@ -104,7 +104,7 @@ public class ClipRectDemo extends View {
         //画6个圆
         //没份的角度
         double precentAngle = 2 * Math.PI / mCircleColors.length;
-        LogUtil.e("角度", "每份的角度;"+precentAngle );
+      //  LogUtil.e("角度", "每份的角度;"+precentAngle );
         mPaint.setColor(mCircleColors[0]);
 
         for (int i = 0; i < mCircleColors.length; i++) {
@@ -113,7 +113,7 @@ public class ClipRectDemo extends View {
             double currentAngle = precentAngle * i + mCurrentRotationAngle;
             float cx = (float) (cententX + mRotationRadius * Math.cos(currentAngle));
             float cy = (float) (cententY + mRotationRadius * Math.sin(currentAngle));
-            LogUtil.e("角度", currentAngle +"，大圆："+ mRotationRadius+"，半径："+mCircleRadius);
+            //LogUtil.e("角度", currentAngle +"，大圆："+ mRotationRadius+"，半径："+mCircleRadius);
             canvas.drawCircle(cx, cy, mCircleRadius, mPaint);
         }
 

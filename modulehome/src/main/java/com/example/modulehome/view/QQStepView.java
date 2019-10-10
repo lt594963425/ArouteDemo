@@ -203,7 +203,7 @@ public class QQStepView extends View {
         float textWith = mTextPaint.measureText(currentStep + "步");
 
         float textHgight = (mTextPaint.descent() + mTextPaint.ascent()) / 2;
-        LogUtil.e("属性", center + ",,," + textHgight);
+//        LogUtil.e("属性", center + ",,," + textHgight);
         mTextRectF = new RectF(center - textWith / 2, center + textHgight, center + textWith / 2, center - textHgight);
 //        canvas.drawRect(mTextRectF, mPersonPaint);
 
@@ -258,7 +258,6 @@ public class QQStepView extends View {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 Float stepValue = (Float) animation.getAnimatedValue();
-                LogUtil.e("动画", stepValue + "");
                 float step = stepValue;
                 QQStepView.this.currentStep = (int) step;
                 invalidate();

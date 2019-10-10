@@ -10,7 +10,7 @@
         android:supportsRtl="true">
         <provider
             android:name=".utils.Utils$FileProvider4UtilCode"
-            android:authorities="${applicationId}.utilcode.provider"
+            android:authorities="${applicationId}.provider"
             android:exported="false"
             android:grantUriPermissions="true"
             android:multiprocess="true">

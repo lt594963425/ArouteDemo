@@ -37,6 +37,7 @@ import com.example.modulebase.base.base.App;
 import com.example.modulebase.data.constant.NetUrls;
 import com.example.modulebase.data.entity.User;
 import com.example.modulehome.entity.DJISetverAreoist;
+import com.example.modulehome.ui.V7SupportActivity;
 import com.example.modulehome.view.ClipRectDemo;
 import com.example.modulehome.view.LoveTypeEvaluator;
 import com.example.modulehome.view.QQStepView;
@@ -80,6 +81,7 @@ public class HomeFragment extends BaseFragment {
     private final float[] modelMatrix = new float[16];  //获得一个model矩阵
     private float rotateAngle;  //获得一个model矩阵
     public ValueAnimator mValueAnimator;
+    public Button mV7_layout;
 
     @Nullable
     @Override
@@ -115,6 +117,13 @@ public class HomeFragment extends BaseFragment {
         Button queryListenerListBtn = view.findViewById(R.id.query_listener_list_btn);
         Button queryFlyuavListBtn = view.findViewById(R.id.query_flyuav_list_btn);
         Button queryFlyHistoryListBtn = view.findViewById(R.id.query_fly_history_list_btn);
+        mV7_layout = view.findViewById(R.id.V7_Layout);
+        mV7_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().startActivity(new Intent(getActivity(), V7SupportActivity.class));
+            }
+        });
         cliprectView = view.findViewById(R.id.cliprect_view);
         mTextView.setText("主页\n" + AndroidUtil.getLocalVersionName());
 
@@ -152,7 +161,6 @@ public class HomeFragment extends BaseFragment {
 
                 double rad = 2 * Math.PI / 360;  //1度对应的弧度
                 double step = (float) stepValue * rad;
-                LogUtil.e("动画2", step + "");
                 cliprectView.setCurrentRotationAngle((float) step);
             }
 
@@ -233,25 +241,25 @@ public class HomeFragment extends BaseFragment {
             @Override
             public void onAnimationStart(Animator animation) {
                 long time = System.currentTimeMillis();
-                LogUtil.e("定时动画", "----------onAnimationStart----------" + time);
+                //LogUtil.e("定时动画", "----------onAnimationStart----------" + time);
             }
 
             @Override
             public void onAnimationEnd(Animator animation) {
                 long time = System.currentTimeMillis();
-                LogUtil.e("定时动画", "----------onAnimationEnd----------" + time);
+                //LogUtil.e("定时动画", "----------onAnimationEnd----------" + time);
             }
 
             @Override
             public void onAnimationCancel(Animator animation) {
                 long time = System.currentTimeMillis();
-                LogUtil.e("定时动画", "----------onAnimationCancel----------" + time);
+                //LogUtil.e("定时动画", "----------onAnimationCancel----------" + time);
             }
 
             @Override
             public void onAnimationRepeat(Animator animation) {
                 long time = System.currentTimeMillis();
-                LogUtil.e("定时动画", "----------onAnimationRepeat----------" + time);
+                //LogUtil.e("定时动画", "----------onAnimationRepeat----------" + time);
             }
         });
         mValueAnimator.start();

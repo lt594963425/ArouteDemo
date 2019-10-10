@@ -83,7 +83,16 @@ public class CustomTestView extends CustomView {
         mMapMatrix = new Matrix();
 
     }
+    //测量
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        //确保是正方形 ,趣小编
+        int w = MeasureSpec.getSize(widthMeasureSpec);
+        int h = MeasureSpec.getSize(heightMeasureSpec);
+        setMeasuredDimension(w > h ? h : w, w > h ? h : w);
 
+    }
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);

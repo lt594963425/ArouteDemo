@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.library.R;
+import com.android.view.MarqueeTextView;
 
 
 /**
@@ -32,6 +33,7 @@ import com.android.library.R;
  */
 
 public class ToastUtils {
+
     private static Toast toast;
     private static Handler mUIHandler = new Handler(Looper.getMainLooper());
 

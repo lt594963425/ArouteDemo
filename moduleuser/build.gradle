@@ -8,11 +8,26 @@ android {
     def globalConfiguration = rootProject.extensions.getByName("ext")
     compileSdkVersion globalConfiguration.androidCompileSdkVersion
     buildToolsVersion globalConfiguration.androidBuildToolsVersion
+    signingConfigs {
+        release {
+            storeFile file("./keystore/airline.jks")
+            storePassword "al123456"
+            keyAlias "airline"
+            keyPassword "al123456"
 
+        }
+        debug {
+            storeFile file("./keystore/airline.jks")
+            storePassword "al123456"
+            keyAlias "airline"
+            keyPassword "al123456"
+        }
+    }
     defaultConfig {
-
         if (isModuleUser.toBoolean()) {
             applicationId "com.example.moduleuser"
+
+
         }
         minSdkVersion globalConfiguration.androidMinSdkVersion
         targetSdkVersion globalConfiguration.androidTargetSdkVersion
@@ -36,13 +51,21 @@ android {
             }
         }
     }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+    if (isModuleUser.toBoolean()) {
+        buildTypes {
+            release {
+                minifyEnabled false
+                proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+                signingConfig signingConfigs.release
+            }
+            debug {
+                minifyEnabled false
+                proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+                signingConfig signingConfigs.debug
+            }
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -66,6 +89,7 @@ dependencies {
 
     implementation viewDependencies.arouterapi
     annotationProcessor viewDependencies.aptaroutercompiler
-
+    //eventbus
+    implementation dataDependencies.eventbus
     implementation project(path: ':modulebase')
 }
