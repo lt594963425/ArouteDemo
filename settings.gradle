@@ -1,1 +1,1 @@
-include ':app', ':moduleCommon', ':moduleUcrop', ':modulePicture', ':modulebase', ':moduleuser', ':modulehome', ':usermylibrary', ':RxKit'
+include ':app', ':moduleCommon', ':moduleUcrop', ':modulePicture', ':modulebase', ':moduleuser', ':modulehome', ':usermylibrary', ':RxKit', ':MPChartLib'

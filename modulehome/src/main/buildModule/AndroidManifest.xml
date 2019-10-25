@@ -12,6 +12,8 @@
         <activity android:name=".PatImageViewActivity"/>
         <activity android:name=".TagLayoutActivity"/>
         <activity android:name=".ui.V7SupportActivity" />
+        <activity android:name=".ui.MapFogActivity" />
+        <activity android:name=".ui.GraffitiActivity" />
 
     </application>
 

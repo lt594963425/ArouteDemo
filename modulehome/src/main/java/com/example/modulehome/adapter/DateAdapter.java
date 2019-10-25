@@ -13,7 +13,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.modulehome.R;
 import com.example.modulehome.entity.DateEntity;
-
 import java.util.List;
 
 import static android.content.Context.VIBRATOR_SERVICE;

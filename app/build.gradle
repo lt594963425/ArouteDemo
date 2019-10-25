@@ -123,6 +123,7 @@ dependencies {
         implementation project(path: ':moduleuser')
     }
     implementation project(path: ':moduleCommon')
+    implementation project(path: ':MPChartLib')
 
 
 }

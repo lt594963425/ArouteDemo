@@ -37,6 +37,8 @@ import com.example.modulebase.base.base.App;
 import com.example.modulebase.data.constant.NetUrls;
 import com.example.modulebase.data.entity.User;
 import com.example.modulehome.entity.DJISetverAreoist;
+import com.example.modulehome.ui.GraffitiActivity;
+import com.example.modulehome.ui.MapFogActivity;
 import com.example.modulehome.ui.V7SupportActivity;
 import com.example.modulehome.view.ClipRectDemo;
 import com.example.modulehome.view.LoveTypeEvaluator;
@@ -91,6 +93,7 @@ public class HomeFragment extends BaseFragment {
         ImageView imageIv = view.findViewById(R.id.image_iv);
         Button preImaageIv = view.findViewById(R.id.pre_imaage_iv);
         final Button tagLayout = view.findViewById(R.id.tag_Layout);
+         Button graff_btn = view.findViewById(R.id.graff_btn);
 
         Button start_btn = view.findViewById(R.id.start_btn);
         Button end_btn = view.findViewById(R.id.end_btn);
@@ -112,12 +115,24 @@ public class HomeFragment extends BaseFragment {
                 mValueAnimator.cancel();
             }
         });
-
+        graff_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().startActivity(new Intent(getActivity(), GraffitiActivity.class));
+            }
+        });
         mTvList = view.findViewById(R.id.tv_list);
         Button queryListenerListBtn = view.findViewById(R.id.query_listener_list_btn);
         Button queryFlyuavListBtn = view.findViewById(R.id.query_flyuav_list_btn);
         Button queryFlyHistoryListBtn = view.findViewById(R.id.query_fly_history_list_btn);
         mV7_layout = view.findViewById(R.id.V7_Layout);
+        Button  map_btn = view.findViewById(R.id.map_btn);
+        map_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().startActivity(new Intent(getActivity(), MapFogActivity.class));
+            }
+        });
         mV7_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

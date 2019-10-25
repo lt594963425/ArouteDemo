@@ -78,7 +78,10 @@ dependencies {
     api dataDependencies.rxjava2
     api dataDependencies.rxjavaandroid
 
+
+
     api dataDependencies.dagger
     annotationProcessor dataDependencies.daggerCompiler
+    api project(path: ':MPChartLib')
 
 }

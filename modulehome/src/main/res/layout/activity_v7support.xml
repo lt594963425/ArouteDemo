@@ -22,5 +22,22 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_1"
+
+        android:layout_margin="@dimen/dp_1"
         android:background="@color/gray" />
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/bar_chart_1"
+        android:layout_width="match_parent"
+        android:layout_height="170dp"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginBottom="10dp" />
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/line_chart_1"
+        android:layout_width="match_parent"
+        android:layout_height="170dp"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginBottom="10dp" />
+
+
 </android.support.v7.widget.LinearLayoutCompat>

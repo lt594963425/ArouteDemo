@@ -874,7 +874,35 @@ public class FileUtils {
             File file = new File(path + key);
             fos = new FileOutputStream(file);
             //保存图片的设置，压缩图片
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 90, fos);
+            fos.flush();
+            fos.close();//关闭流
+            //保存图片后发送广播通知更新数据库
+            Uri uri = Uri.fromFile(file);
+            UIUtils.getContext().sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /***
+     * 保存到SD卡
+     * @param path
+     * @param bitmap
+     */
+    public static void saveBitmap(String path,String name, Bitmap bitmap) {
+        FileOutputStream fos;
+        try {
+            File files = new File(path);
+            if (!files.exists()) {
+                files.mkdir();
+            }
+            File file = new File(path+name);
+            fos = new FileOutputStream(file);
+            //保存图片的设置，压缩图片
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos);
             fos.flush();
             fos.close();//关闭流
             //保存图片后发送广播通知更新数据库

@@ -28,7 +28,7 @@ dependencies {
     //rx
     api dataDependencies.rxbinding2
     //图片
-    implementation viewDependencies.glide
+    api viewDependencies.glide
 
     //高德3d地图及导航
     implementation viewDependencies.navi3dmap

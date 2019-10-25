@@ -21,7 +21,6 @@ import com.android.utils.LogUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.modulehome.R;
 import com.example.modulehome.adapter.MonthAdapter;
-import com.example.modulehome.adapter.TitleNumberMonthAdapter;
 import com.example.modulehome.adapter.YearAdapter;
 import com.example.modulehome.adapter.YearAndMonthAdapter;
 import com.example.modulehome.entity.DateEntity;
@@ -214,6 +213,8 @@ public class CalendarSelectedView extends LinearLayout implements MonthAdapter.O
                         mYearAndMonthLayout.setVisibility(GONE);
                         mYearAndMonthTabLayout.setVisibility(GONE);
                         mRvYearCalendar.setVisibility(GONE);
+                        mAdapter.notifyDataSetChanged();
+                        mRvCalendar.invalidate();
                         //选择日期
                         smoothMoveToPosition(mRvCalendar, mMonthLists.get(position) - 1, false);
                         updateTitleText();
@@ -437,7 +438,6 @@ public class CalendarSelectedView extends LinearLayout implements MonthAdapter.O
         if (mToPosition < 0) {
             mToPosition = 0;
         }
-
         MonthEntity monthEntity = monthList.get(mToPosition);
         mTvCalTitle.setText(monthEntity.getTitle());
 
