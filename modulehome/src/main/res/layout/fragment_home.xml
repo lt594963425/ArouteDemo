@@ -47,19 +47,36 @@
             android:id="@+id/V7_Layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="日历\折线图\柱状图" />
+            android:text="日历\折线图\柱状图" />da
 
         <Button
             android:id="@+id/map_btn"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="地图迷雾" />
+            android:text="图片标签点击" />
+
         <Button
             android:id="@+id/graff_btn"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="涂鸦" />
 
+        <Button
+            android:id="@+id/graff_btn2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="涂鸦2" />
+
+        <Button
+            android:id="@+id/graff_btn3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="涂鸦3" />
+        <Button
+            android:id="@+id/history_btn4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="历史记录" />
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

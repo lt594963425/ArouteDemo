@@ -2,6 +2,7 @@ package com.android.utils;
 
 import android.widget.ImageView;
 
+import com.android.library.R;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
@@ -36,12 +37,10 @@ public class GlideUtils {
                 .into(imageView);
     }
 
-    public static void intoAdImage(String path, ImageView imageView,int placeholder,int errorimg) {
+    public static void intoAdImage(String path, ImageView imageView) {
         try {
             RequestOptions requestOptions = new RequestOptions()
-                    .centerCrop()
-                    .placeholder(placeholder)
-                    .error(errorimg);
+                    .fitCenter();
             Glide.with(UIUtils.getContext())
                     .load(path)
                     .apply(requestOptions)

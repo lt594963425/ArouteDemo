@@ -36,10 +36,12 @@ public class PhotoView extends ImageView {
 
     public PhotoView(Context context) {
         this(context, null);
+
     }
 
     public PhotoView(Context context, AttributeSet attr) {
         this(context, attr, 0);
+
     }
 
     public PhotoView(Context context, AttributeSet attr, int defStyle) {

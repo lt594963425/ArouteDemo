@@ -14,6 +14,9 @@
         <activity android:name=".ui.V7SupportActivity" />
         <activity android:name=".ui.MapFogActivity" />
         <activity android:name=".ui.GraffitiActivity" />
+        <activity android:name=".ui.GraffitiActivity2" />
+        <activity android:name=".ui.GraffitiActivity3" />
+        <activity android:name=".ui.HistoryRcordActivity" />
 
     </application>
 

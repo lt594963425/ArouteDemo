@@ -112,8 +112,7 @@ public class PatImageView extends android.support.v7.widget.AppCompatImageView {
                         {
                             savedMatrix.set(matrix);
                             middlePoint = midPoint(event);
-                            if(!long_touch)
-                            {
+                            if(!long_touch) {
                                 mode = ZOOM;
                             }
                             else
@@ -130,26 +129,21 @@ public class PatImageView extends android.support.v7.widget.AppCompatImageView {
                         break;
                     case MotionEvent.ACTION_MOVE:
                         if(vibrator != null)	vibrator.cancel();
-                        if(mode == DRAG)
-                        {
+                        if(mode == DRAG) {
                             matrix.set(savedMatrix);
                             matrix.postTranslate(event.getX() - startPoint.x, event.getY() - startPoint.y);
                         }
 
-                        if(mode == ZOOM)
-                        {
+                        if(mode == ZOOM) {
                             float newDistance = getDistance(event);
-
-                            if(newDistance > 10f)
-                            {
+                            if(newDistance > 10f) {
                                 matrix.set(savedMatrix);
                                 float scale = newDistance / oldDistance;
                                 matrix.postScale(scale, scale, middlePoint.x, middlePoint.y);
                             }
                         }
 
-                        if(mode == ROTA)
-                        {
+                        if(mode == ROTA) {
                             float newAngle = getDegree(event);
                             matrix.set(savedMatrix);
                             float degrees = newAngle - oldAngle;
@@ -157,6 +151,7 @@ public class PatImageView extends android.support.v7.widget.AppCompatImageView {
                         }
                         break;
                 }
+
                 setImageMatrix(matrix);
                 invalidate();
                 gdetector.onTouchEvent(event);
@@ -165,9 +160,10 @@ public class PatImageView extends android.support.v7.widget.AppCompatImageView {
         });
     }
 
+
+
     // 计算两个手指之间的距离
-    private float getDistance(MotionEvent event)
-    {
+    private float getDistance(MotionEvent event) {
         float x = event.getX(0) - event.getX(1);
         float y = event.getY(0) - event.getY(1);
 
@@ -175,8 +171,7 @@ public class PatImageView extends android.support.v7.widget.AppCompatImageView {
     }
 
     // 计算两个手指所形成的直线和x轴的角度
-    private float getDegree(MotionEvent event)
-    {
+    private float getDegree(MotionEvent event) {
         return (float)(Math.atan((event.getY(1) - event.getY(0)) / (event.getX(1) - event.getX(0))) * 180f);
     }
 

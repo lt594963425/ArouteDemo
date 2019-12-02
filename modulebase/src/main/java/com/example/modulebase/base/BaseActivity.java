@@ -12,6 +12,9 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.android.library.utils.StatusBarUtils;
 import com.android.utils.LogUtil;
@@ -153,5 +156,19 @@ public class BaseActivity extends AppCompatActivity {
         mErrorView = getLayoutInflater().inflate(R.layout.error_view, null, false);
 
     }
-
+    public void setAdapterStatusBar(View view) {
+        if (view.getLayoutParams() instanceof RelativeLayout.LayoutParams) {
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
+            layoutParams.topMargin = StatusBarUtils.getStatusBarHeight();
+            view.setLayoutParams(layoutParams);
+        } else if (view.getLayoutParams() instanceof LinearLayout.LayoutParams) {
+            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) view.getLayoutParams();
+            layoutParams.topMargin = StatusBarUtils.getStatusBarHeight();
+            view.setLayoutParams(layoutParams);
+        } else if (view.getLayoutParams() instanceof FrameLayout.LayoutParams) {
+            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) view.getLayoutParams();
+            layoutParams.topMargin = StatusBarUtils.getStatusBarHeight();
+            view.setLayoutParams(layoutParams);
+        }
+    }
 }

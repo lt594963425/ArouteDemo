@@ -5,10 +5,15 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.TypeEvaluator;
 import android.animation.ValueAnimator;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.PointF;
 import android.opengl.Matrix;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.RemoteException;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +27,7 @@ import com.alibaba.android.arouter.facade.Postcard;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.facade.callback.NavCallback;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.android.library.utils.LogUtils;
 import com.android.library.utils.ToastUtils;
 import com.android.utils.AndroidUtil;
 import com.android.utils.FastJsonUtils;
@@ -38,6 +44,9 @@ import com.example.modulebase.data.constant.NetUrls;
 import com.example.modulebase.data.entity.User;
 import com.example.modulehome.entity.DJISetverAreoist;
 import com.example.modulehome.ui.GraffitiActivity;
+import com.example.modulehome.ui.GraffitiActivity2;
+import com.example.modulehome.ui.GraffitiActivity3;
+import com.example.modulehome.ui.HistoryRcordActivity;
 import com.example.modulehome.ui.MapFogActivity;
 import com.example.modulehome.ui.V7SupportActivity;
 import com.example.modulehome.view.ClipRectDemo;
@@ -51,16 +60,19 @@ import com.lzy.okgo.model.HttpHeaders;
 import com.lzy.okgo.model.HttpParams;
 import com.lzy.okgo.model.Response;
 import com.lzy.okrx2.adapter.ObservableResponse;
+import com.tao.xiaoyuanyuan.aidl.IBackGroundAidl;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -93,7 +105,25 @@ public class HomeFragment extends BaseFragment {
         ImageView imageIv = view.findViewById(R.id.image_iv);
         Button preImaageIv = view.findViewById(R.id.pre_imaage_iv);
         final Button tagLayout = view.findViewById(R.id.tag_Layout);
-         Button graff_btn = view.findViewById(R.id.graff_btn);
+        Button graff_btn = view.findViewById(R.id.graff_btn);
+        view.findViewById(R.id.graff_btn2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().startActivity(new Intent(getActivity(), GraffitiActivity2.class));
+            }
+        });
+        view.findViewById(R.id.graff_btn3).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().startActivity(new Intent(getActivity(), GraffitiActivity3.class));
+            }
+        });
+        view.findViewById(R.id.history_btn4).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().startActivity(new Intent(getActivity(), HistoryRcordActivity.class));
+            }
+        });
 
         Button start_btn = view.findViewById(R.id.start_btn);
         Button end_btn = view.findViewById(R.id.end_btn);
@@ -104,6 +134,7 @@ public class HomeFragment extends BaseFragment {
                 PointF point2 = new PointF(300, 300);
                 startAnimal(tagLayout, point1, point2);
                 mValueAnimator.start();
+                startTimer();
             }
         });
         end_btn.setOnClickListener(new View.OnClickListener() {
@@ -113,6 +144,7 @@ public class HomeFragment extends BaseFragment {
                 PointF point1 = new PointF(300, 300);
                 startAnimal(tagLayout, point1, point2);
                 mValueAnimator.cancel();
+                stopDis();
             }
         });
         graff_btn.setOnClickListener(new View.OnClickListener() {
@@ -126,7 +158,7 @@ public class HomeFragment extends BaseFragment {
         Button queryFlyuavListBtn = view.findViewById(R.id.query_flyuav_list_btn);
         Button queryFlyHistoryListBtn = view.findViewById(R.id.query_fly_history_list_btn);
         mV7_layout = view.findViewById(R.id.V7_Layout);
-        Button  map_btn = view.findViewById(R.id.map_btn);
+        Button map_btn = view.findViewById(R.id.map_btn);
         map_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -224,13 +256,37 @@ public class HomeFragment extends BaseFragment {
 //        mTextView.getMatrix().mapVectors();
 
         startRun2SecondQueryUavUpdateToMap();
-
+        //绑定远程服务
+        bindRomteService();
         return view;
     }
 
+    IBackGroundAidl imServer = null;
+
+    private void bindRomteService() {
+        Intent intent = new Intent();
+        intent.setAction("com.tao.xiaoyuanyuan.aidl.IBackGroundAidl");
+        intent.setPackage(getActivity().getPackageName());    //兼容Android 5.0
+        getActivity().bindService(intent, new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                imServer = IBackGroundAidl.Stub.asInterface(service);
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                try {
+                    imServer.getValue();
+                    mTvList.setText(imServer.getValue());
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, Context.BIND_AUTO_CREATE);
+    }
+
+
     public void startAnimal(final View view, PointF point1, PointF point2) {
-
-
         ViewTypeEvaluator evaluator = new ViewTypeEvaluator(point1, point2);
         //会调用自定义路径属性动画evaluate方法
         ValueAnimator objectAnimator = ObjectAnimator.ofObject(evaluator, point1, point2);
@@ -539,6 +595,47 @@ public class HomeFragment extends BaseFragment {
         }
 
 
+    }
+
+
+    private Disposable getDisposable;
+
+    private void startTimer() {
+        Observable.interval(0, 3, TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Long>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        getDisposable = d;
+                        LogUtils.e("计时器", "计时器:-----------------------");
+                        mTvList.append("计时器:----------onSubscribe-------------\n");
+                    }
+
+                    @Override
+                    public void onNext(Long aLong) {
+                        LogUtils.e("计时器", "计时器:-----------------------" + aLong);
+                        mTvList.append("计时器:----------onNext-------------" + aLong + "\n");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        LogUtils.e("计时器", "计时器:-----------------------\n");
+                        mTvList.append("计时器:----------onError-------------");
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        LogUtils.e("计时器", "计时器:------------------------onComplete-");
+                        mTvList.append("计时器:----------onComplete-------------\n");
+                    }
+                });
+    }
+
+    private void stopDis() {
+        if (getDisposable != null && !getDisposable.isDisposed()) {
+            getDisposable.dispose();
+        }
     }
 
     @Override

@@ -20,11 +20,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PatImageViewActivity"/>
-        <activity android:name=".TagLayoutActivity"/>
+        <activity android:name=".PatImageViewActivity" />
+        <activity android:name=".TagLayoutActivity" />
         <activity android:name=".ui.V7SupportActivity" />
         <activity android:name=".ui.MapFogActivity" />
         <activity android:name=".ui.GraffitiActivity" />
+        <activity android:name=".ui.GraffitiActivity2" />
+        <activity android:name=".ui.GraffitiActivity3" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.example.modulehome.fileprovider"

@@ -401,7 +401,7 @@ public class PhotoViewAttacher implements View.OnTouchListener,
 
         }
 
-        return handled;
+        return false;
     }
 
     public void setAllowParentInterceptOnEdge(boolean allow) {
@@ -516,7 +516,7 @@ public class PhotoViewAttacher implements View.OnTouchListener,
             updateBaseMatrix(mImageView.getDrawable());
         } else {
             // Reset the Matrix...
-            resetMatrix();
+//            resetMatrix();
         }
     }
 
@@ -541,7 +541,10 @@ public class PhotoViewAttacher implements View.OnTouchListener,
         mDrawMatrix.postConcat(mSuppMatrix);
         return mDrawMatrix;
     }
-
+    // 返回当前矩阵...
+    public Matrix getCurrentMatrix() {
+        return mSuppMatrix;
+    }
     public Matrix getImageMatrix() {
         return mDrawMatrix;
     }
